@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "intro": {
+      "type": "rich-text",
+      "settings": { "align": "left", "width": 720, "bg": "#0B0B0D", "pad_top": 80, "pad_bottom": 24 },
+      "blocks": {
+        "eb": { "type": "eyebrow", "settings": { "text": "OUTSIDERS HAVEN" } },
+        "h":  { "type": "heading", "settings": { "text": "THE HAVEN IS WITHIN" } },
+        "t":  { "type": "text", "settings": { "text": "<p>Outsiders Haven is an independent streetwear label founded in Dublin in 2024. We make small runs of heavy, considered garments for people who don't need to perform to feel at home in themselves.</p>" } }
+      },
+      "block_order": ["eb", "h", "t"]
+    },
+    "body": {
+      "type": "rich-text",
+      "settings": { "align": "left", "width": 720, "bg": "#0B0B0D", "pad_top": 0, "pad_bottom": 80 },
+      "blocks": {
+        "t1": { "type": "text", "settings": { "text": "<h2>WHAT A HAVEN IS</h2><p>A haven is where you stop performing — the front comes down. It can be a place or a state of mind. Alone, or with the few people who genuinely get you. It isn't defined by anyone else's expectations. It starts within, but it can be made real.</p>" } },
+        "t2": { "type": "text", "settings": { "text": "<h2>HOW WE MAKE</h2><p>Every drop is produced in limited quantity. Heavyweight fabrics, garment-dyed and finished for a lived-in feel. When a piece sells out, it's gone — we don't restock. We'd rather make less and mean it.</p>" } },
+        "t3": { "type": "text", "settings": { "text": "<h2>JUST BE</h2><p>Two words on the inside of every Sanctum piece. Not a slogan to shout — a reminder to the person wearing it. That's the whole idea.</p>" } }
+      },
+      "block_order": ["t1", "t2", "t3"]
+    }
+  },
+  "order": ["intro", "body"]
+}

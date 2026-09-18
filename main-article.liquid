@@ -1,0 +1,13 @@
+<div class="oh-page">
+  <h1>{{ article.title | upcase }}</h1>
+  <p class="oh-note" style="margin:-20px 0 26px">{{ article.published_at | date: '%d %B %Y' }}</p>
+  {% if article.image %}
+    <div style="margin-bottom:28px">{{ article.image | image_url: width: 1400 | image_tag: alt: article.title }}</div>
+  {% endif %}
+  <div class="oh-rte">{{ article.content }}</div>
+  <p style="margin-top:30px"><a class="oh-note" style="text-decoration:underline" href="{{ blog.url }}">← BACK TO {{ blog.title | upcase }}</a></p>
+</div>
+
+{% schema %}
+{ "name": "Article", "settings": [] }
+{% endschema %}

@@ -1,0 +1,42 @@
+<aside class="oh-drawer oh-drawer--right" data-cart-drawer aria-hidden="true" aria-label="Cart">
+  <div class="oh-drawer-head">
+    <span class="oh-drawer-title">CART (<span data-cart-count>{{ cart.item_count }}</span>)</span>
+    <button class="oh-x" type="button" data-close aria-label="Close cart">{% render 'icon-close' %}</button>
+  </div>
+
+  <div class="oh-drawer-body" data-cart-items>
+    {% if cart.item_count == 0 %}
+      <p class="oh-note oh-empty">YOUR CART IS EMPTY</p>
+    {% else %}
+      {% for item in cart.items %}
+        <div class="oh-line">
+          {% if item.image %}{{ item.image | image_url: width: 200 | image_tag: alt: item.title }}{% endif %}
+          <div style="flex:1">
+            <div class="oh-line-name">{{ item.product.title | upcase }}</div>
+            <div class="oh-line-var">{{ item.variant.title | upcase }}</div>
+            <div style="margin-top:8px">
+              <div class="oh-stepper">
+                <button type="button" data-qty="{{ forloop.index }}" data-to="{{ item.quantity | minus: 1 }}" aria-label="Decrease">&minus;</button>
+                <span>{{ item.quantity }}</span>
+                <button type="button" data-qty="{{ forloop.index }}" data-to="{{ item.quantity | plus: 1 }}" aria-label="Increase">+</button>
+              </div>
+            </div>
+            <button class="oh-remove" type="button" data-qty="{{ forloop.index }}" data-to="0">REMOVE</button>
+          </div>
+          <div class="oh-line-name">{{ item.final_line_price | money }}</div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="oh-drawer-foot" data-cart-foot {% if cart.item_count == 0 %}style="display:none"{% endif %}>
+    <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;letter-spacing:.08em">
+      <span>SUBTOTAL</span><span data-cart-total>{{ cart.total_price | money }}</span>
+    </div>
+    <p style="font-size:10px;color:#888;margin:8px 0 16px">Shipping and taxes calculated at checkout.</p>
+    <form action="{{ routes.cart_url }}" method="post">
+      <button class="oh-btn oh-btn-block" type="submit" name="checkout">CHECKOUT</button>
+    </form>
+    <a class="oh-btn oh-btn-ghost oh-btn-block" style="margin-top:10px" href="{{ routes.cart_url }}">VIEW CART</a>
+  </div>
+</aside>

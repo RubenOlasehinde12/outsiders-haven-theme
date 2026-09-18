@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "intro": {
+      "type": "rich-text",
+      "settings": { "align": "left", "width": 720, "bg": "#0B0B0D", "pad_top": 80, "pad_bottom": 24 },
+      "blocks": {
+        "eb": { "type": "eyebrow", "settings": { "text": "CUSTOMER SERVICE" } },
+        "h":  { "type": "heading", "settings": { "text": "SHIPPING & RETURNS" } }
+      },
+      "block_order": ["eb", "h"]
+    },
+    "body": {
+      "type": "rich-text",
+      "settings": { "align": "left", "width": 720, "bg": "#0B0B0D", "pad_top": 0, "pad_bottom": 80 },
+      "blocks": {
+        "s1": { "type": "text", "settings": { "text": "<h2>PROCESSING</h2><p>Orders are processed within 1–2 business days. During a drop, allow a little extra time as volume is high. You'll get a confirmation email with tracking once your order ships.</p>" } },
+        "s2": { "type": "text", "settings": { "text": "<h2>SHIPPING</h2><p>We ship worldwide. Free shipping on orders over €150. Delivery is typically 3–5 business days within Ireland and the EU, and 5–10 business days for the rest of the world. Duties and taxes for orders outside the EU may be charged on delivery and are the customer's responsibility.</p>" } },
+        "s3": { "type": "text", "settings": { "text": "<h2>RETURNS & EXCHANGES</h2><p>Returns are accepted within 14 days of delivery on unworn items with tags attached. To start a return, email us with your order number. Return shipping is the customer's responsibility unless the item arrived faulty. Refunds are issued to the original payment method once the return is received and checked.</p>" } },
+        "s4": { "type": "text", "settings": { "text": "<h2>FAULTY OR WRONG ITEMS</h2><p>If something arrives faulty or incorrect, email outsidershvn@gmail.com within 7 days of delivery with your order number and a photo, and we'll make it right.</p>" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4"]
+    }
+  },
+  "order": ["intro", "body"]
+}

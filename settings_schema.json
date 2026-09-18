@@ -1,0 +1,127 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Outsiders Haven",
+    "theme_version": "3.7.0",
+    "theme_author": "Outsiders Haven",
+    "theme_documentation_url": "https://shopify.dev",
+    "theme_support_url": "https://shopify.dev"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Base"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Muted text",
+        "default": "#777777"
+      },
+      {
+        "type": "color",
+        "id": "color_line",
+        "label": "Borders / lines",
+        "default": "#e6e6e6"
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "color",
+        "id": "color_button",
+        "label": "Button background",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "color_button_text",
+        "label": "Button text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Announcement bar"
+      },
+      {
+        "type": "color",
+        "id": "color_announce_bg",
+        "label": "Announcement background",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "color_announce_text",
+        "label": "Announcement text",
+        "default": "#ffffff"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading font",
+        "default": "archivo_n8"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "archivo_n4"
+      },
+      {
+        "type": "range",
+        "id": "font_body_scale",
+        "label": "Base font size",
+        "min": 90,
+        "max": 120,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Maximum page width",
+        "min": 1200,
+        "max": 2000,
+        "step": 40,
+        "unit": "px",
+        "default": 1600
+      },
+      {
+        "type": "range",
+        "id": "section_pad",
+        "label": "Section side padding",
+        "min": 16,
+        "max": 64,
+        "step": 4,
+        "unit": "px",
+        "default": 40
+      }
+    ]
+  }
+]

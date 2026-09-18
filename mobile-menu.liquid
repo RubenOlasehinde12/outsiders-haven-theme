@@ -1,0 +1,74 @@
+<aside class="oh-drawer oh-drawer--left" data-menu-drawer data-drawer="menu-drawer" aria-hidden="true" aria-label="Menu">
+  <div class="oh-drawer-head">
+    <button class="oh-x" type="button" data-close aria-label="Close menu">{% render 'icon-close' %}</button>
+  </div>
+
+  <div class="oh-drawer-body">
+    {% if tagline != blank %}
+      <p class="oh-drawer-tagline">{{ tagline }}</p>
+    {% endif %}
+
+    <nav class="oh-menu">
+      {% for link in menu.links %}
+        {% if link.links != blank and link.links.size > 0 %}
+          <div class="oh-menu-group" data-submenu>
+            <button class="oh-menu-toggle" type="button" data-submenu-toggle aria-expanded="false">
+              <span>{{ link.title | upcase }}</span>
+              <span class="oh-menu-plus" aria-hidden="true"></span>
+            </button>
+            <div class="oh-submenu" data-submenu-panel hidden>
+              {% for child in link.links %}
+                <a href="{{ child.url }}">{{ child.title | upcase }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
+          <a href="{{ link.url }}">{{ link.title | upcase }}</a>
+        {% endif %}
+      {% endfor %}
+    </nav>
+
+    {% if secondary != blank and secondary.links.size > 0 %}
+      <nav class="oh-menu oh-menu--secondary">
+        {% for link in secondary.links %}
+          <a href="{{ link.url }}">{{ link.title | upcase }}</a>
+        {% endfor %}
+      </nav>
+    {% endif %}
+
+    {% if shop.customer_accounts_enabled %}
+      <nav class="oh-menu oh-menu--secondary">
+        {% if customer %}
+          <a href="{{ routes.account_url }}">ACCOUNT</a>
+        {% else %}
+          <a href="{{ routes.account_login_url }}">ACCOUNT</a>
+        {% endif %}
+      </nav>
+    {% endif %}
+
+    {% if show_locale and localization.available_countries.size > 1 %}
+      <div class="oh-drawer-locale">
+        {% form 'localization' %}
+          <select name="country_code" class="oh-locale-select" onchange="this.form.submit()">
+            {% for country in localization.available_countries %}
+              <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+              </option>
+            {% endfor %}
+          </select>
+        {% endform %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="oh-drawer-foot">
+    {% if ig != blank or tt != blank or yt != blank %}
+      <div class="oh-drawer-social">
+        {% if ig != blank %}<a href="{{ ig }}" target="_blank" rel="noopener">INSTAGRAM</a>{% endif %}
+        {% if tt != blank %}<a href="{{ tt }}" target="_blank" rel="noopener">TIKTOK</a>{% endif %}
+        {% if yt != blank %}<a href="{{ yt }}" target="_blank" rel="noopener">YOUTUBE</a>{% endif %}
+      </div>
+    {% endif %}
+    {% if handle != blank %}<p class="oh-drawer-handle">{{ handle }}</p>{% endif %}
+  </div>
+</aside>

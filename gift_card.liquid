@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ shop.name }} — Gift card</title>
+  {{ content_for_header }}
+  {% render 'oh-vars' %}
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+</head>
+<body class="oh-password-body">
+  <div class="oh-gate">
+    <div class="oh-logo-text">{{ shop.name | upcase }}</div>
+    <h1 class="oh-gate-title" style="font-size:26px">GIFT CARD</h1>
+    <p class="oh-gate-sub">{{ gift_card.balance | money }} balance</p>
+    <div style="margin-top:26px">{{ gift_card.qr_identifier }}</div>
+    <p class="oh-input" style="margin-top:22px">{{ gift_card.code | format_code }}</p>
+    <a class="oh-btn oh-btn-block" style="margin-top:16px" href="{{ shop.url }}">SHOP NOW</a>
+  </div>
+</body>
+</html>

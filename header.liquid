@@ -1,0 +1,69 @@
+{%- liquid
+  assign s = section.settings
+-%}
+{%- unless request.page_type == 'password' -%}
+<header class="oh-header{% unless s.enable_transparent %} oh-header--always-solid{% endunless %}"
+        style="--oh-header-pad-y:{{ s.pad_y | default: 20 }}px;{% if s.bg_color != blank %}--oh-header-bg:{{ s.bg_color }};{% endif %}{% if s.text_color != blank %}--oh-header-text:{{ s.text_color }};{% endif %}">
+  <div class="oh-header-left">
+    <button class="oh-iconbtn" type="button" data-open="menu-drawer" aria-label="Open menu">{% render 'icon-menu' %}</button>
+    <nav class="oh-nav">
+      {% for link in s.menu.links %}
+        <a href="{{ link.url }}">{{ link.title | upcase }}</a>
+      {% endfor %}
+    </nav>
+  </div>
+
+  <a class="oh-logo" href="{{ routes.root_url }}">
+    {% if s.logo %}
+      {{ s.logo | image_url: width: 600 | image_tag: alt: shop.name, widths: '120,240,360,480,600', style: 'height:' | append: s.logo_height | append: 'px' }}
+    {% else %}
+      <span class="oh-logo-text">{{ shop.name | upcase }}</span>
+    {% endif %}
+  </a>
+
+  <div class="oh-utils">
+    {% if shop.customer_accounts_enabled and s.show_account %}
+      <a class="oh-textlink" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">ACCOUNT</a>
+      <span class="oh-sep oh-textlink">|</span>
+    {% endif %}
+    <a class="oh-textlink" href="{{ routes.search_url }}" data-open="search-drawer">SEARCH</a>
+    <span class="oh-sep oh-textlink">|</span>
+    <a class="oh-textlink" href="{{ routes.cart_url }}" data-open="cart-drawer">CART (<span data-cart-count>{{ cart.item_count }}</span>)</a>
+
+    <button class="oh-iconbtn" type="button" data-open="search-drawer" aria-label="Search">{% render 'icon-search' %}</button>
+    <button class="oh-iconbtn" type="button" data-open="cart-drawer" aria-label="Cart">
+      {% render 'icon-cart' %}<span class="oh-count-badge" data-cart-count>{{ cart.item_count }}</span>
+    </button>
+  </div>
+</header>
+
+{% render 'mobile-menu', menu: s.menu, secondary: s.drawer_secondary_menu, tagline: s.drawer_tagline, ig: s.social_instagram, tt: s.social_tiktok, yt: s.social_youtube, handle: s.social_handle, show_locale: s.drawer_show_locale %}
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "header", "content": "Logo & menu" },
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_height", "label": "Logo height", "min": 12, "max": 44, "step": 1, "unit": "px", "default": 17 },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "header", "content": "Mobile menu drawer" },
+    { "type": "text", "id": "drawer_tagline", "label": "Tagline (top of drawer)", "default": "JUST BE — A HAVEN IS WITHIN." },
+    { "type": "link_list", "id": "drawer_secondary_menu", "label": "Secondary menu (info / legal)", "info": "Create a menu in Navigation with About, Shipping, Contact, FAQ, etc. Shows lower in the drawer." },
+    { "type": "header", "content": "Social links (drawer footer)" },
+    { "type": "url", "id": "social_instagram", "label": "Instagram URL" },
+    { "type": "url", "id": "social_tiktok", "label": "TikTok URL" },
+    { "type": "url", "id": "social_youtube", "label": "YouTube URL" },
+    { "type": "text", "id": "social_handle", "label": "Handle shown in drawer", "default": "@outsidershaven" },
+    { "type": "checkbox", "id": "drawer_show_locale", "label": "Show country / currency selector in drawer", "default": true },
+    { "type": "header", "content": "Appearance" },
+    { "type": "range", "id": "pad_y", "label": "Header vertical padding", "min": 6, "max": 40, "step": 1, "unit": "px", "default": 20 },
+    { "type": "checkbox", "id": "enable_transparent", "label": "Transparent over homepage hero", "default": true, "info": "Header overlays the hero and turns solid on scroll. Turn off for a solid header everywhere." },
+    { "type": "color", "id": "bg_color", "label": "Header background (solid state)", "info": "Leave blank to use the theme background colour." },
+    { "type": "color", "id": "text_color", "label": "Header text (solid state)", "info": "Leave blank to use the theme text colour." },
+    { "type": "checkbox", "id": "show_account", "label": "Show Account link", "default": true }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

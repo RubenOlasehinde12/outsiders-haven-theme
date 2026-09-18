@@ -1,0 +1,59 @@
+{%- liquid
+  assign s = section.settings
+  assign products = s.collection.products
+  assign columns = s.columns
+-%}
+<div class="oh-section" style="padding-top:{{ s.pad_top }}px;padding-bottom:{{ s.pad_bottom }}px">
+  {% if s.title != blank %}
+    <h2 class="oh-sec-title" style="text-align:{{ s.title_align }}">{{ s.title }}</h2>
+  {% endif %}
+
+  <div class="oh-grid oh-grid--{{ s.layout | default: 'grid' }}" style="--oh-cols:{{ columns }};--oh-scroll-cardw:{{ s.scroll_card_w | default: 62 }}%">
+    {% if s.collection != blank and products.size > 0 %}
+      {% for card_product in products limit: s.count %}
+        {% render 'product-card', card_product: card_product %}
+      {% endfor %}
+    {% else %}
+      {%- comment -%} Onboarding placeholders so a brand-new store still looks intentional {%- endcomment -%}
+      {% for i in (1..columns) %}
+        <a class="oh-card oh-card--ph" href="{{ routes.all_products_collection_url }}">
+          <div class="oh-card-media"></div>
+          <div class="oh-card-meta"><span>{% if s.collection == blank %}CHOOSE A COLLECTION{% else %}ADD PRODUCTS{% endif %}</span><span class="oh-price">$00</span></div>
+        </a>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  {% if s.button_label != blank and s.collection != blank %}
+    <div class="oh-center"><a class="oh-btn" href="{{ s.collection.url }}">{{ s.button_label }}</a></div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "NEW ARRIVALS" },
+    { "type": "select", "id": "title_align", "label": "Heading alignment", "default": "center",
+      "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }] },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    {
+      "type": "select", "id": "layout", "label": "Layout", "default": "grid",
+      "info": "Grid = wrapping rows. Horizontal scroll = one swipeable row.",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "scroll", "label": "Horizontal scroll" }
+      ]
+    },
+    { "type": "range", "id": "scroll_card_w", "label": "Card width (horizontal scroll)", "min": 40, "max": 90, "step": 2, "unit": "%", "default": 62, "info": "How wide each card is on mobile when using horizontal scroll. Lower = more peeking." },
+    { "type": "range", "id": "count", "label": "Maximum products", "min": 2, "max": 16, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "VIEW ALL" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pad_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "pad_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "Featured collection" }]
+}
+{% endschema %}

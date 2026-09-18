@@ -1,0 +1,883 @@
+{% doc %}
+  @prompt
+    Create a membership sign up page that links to my omnisend account 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-membership-signup-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: {{ block.settings.section_padding }}px;
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+  }
+
+  .ai-membership-signup__container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.content_max_width }}px;
+    margin: 0 auto;
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-membership-signup__heading-{{ ai_gen_id }} {
+    font-family: {{ block.settings.heading_font.family }}, {{ block.settings.heading_font.fallback_families }};
+    font-weight: {{ block.settings.heading_font.weight }};
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 {{ block.settings.spacing_between_elements }}px 0;
+    line-height: 1.2;
+  }
+
+  .ai-membership-signup__description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.description_color }};
+    margin: 0 0 {{ block.settings.spacing_between_elements }}px 0;
+    line-height: 1.6;
+  }
+
+  .ai-membership-signup__form-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.form_field_spacing }}px;
+    margin-top: {{ block.settings.spacing_between_elements }}px;
+  }
+
+  .ai-membership-signup__field-group-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+  }
+
+  .ai-membership-signup__label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_size }}px;
+    color: {{ block.settings.label_color }};
+    font-weight: 500;
+  }
+
+  .ai-membership-signup__input-{{ ai_gen_id }} {
+    width: 100%;
+    padding: {{ block.settings.input_padding }}px;
+    font-size: {{ block.settings.input_text_size }}px;
+    color: {{ block.settings.input_text_color }};
+    background-color: {{ block.settings.input_background_color }};
+    border: {{ block.settings.input_border_width }}px solid {{ block.settings.input_border_color }};
+    border-radius: {{ block.settings.input_border_radius }}px;
+    box-sizing: border-box;
+  }
+
+  .ai-membership-signup__input-{{ ai_gen_id }}:focus {
+    outline: none;
+    border-color: {{ block.settings.input_focus_border_color }};
+  }
+
+  .ai-membership-signup__checkbox-group-{{ ai_gen_id }} {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .ai-membership-signup__checkbox-{{ ai_gen_id }} {
+    margin-top: 4px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .ai-membership-signup__checkbox-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_size }}px;
+    color: {{ block.settings.label_color }};
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  .ai-membership-signup__checkbox-label-{{ ai_gen_id }} a {
+    color: {{ block.settings.link_color }};
+    text-decoration: underline;
+  }
+
+  .ai-membership-signup__button-{{ ai_gen_id }} {
+    width: 100%;
+    padding: {{ block.settings.button_padding }}px;
+    font-size: {{ block.settings.button_text_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.button_text_color }};
+    background-color: {{ block.settings.button_background_color }};
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-membership-signup__button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background_color }};
+  }
+
+  .ai-membership-signup__button-{{ ai_gen_id }}:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .ai-membership-signup__message-{{ ai_gen_id }} {
+    margin-top: {{ block.settings.form_field_spacing }}px;
+    padding: 12px;
+    border-radius: {{ block.settings.input_border_radius }}px;
+    font-size: {{ block.settings.label_size }}px;
+    text-align: center;
+    display: none;
+  }
+
+  .ai-membership-signup__message-{{ ai_gen_id }}.success {
+    display: block;
+    background-color: {{ block.settings.success_background_color }};
+    color: {{ block.settings.success_text_color }};
+  }
+
+  .ai-membership-signup__message-{{ ai_gen_id }}.error {
+    display: block;
+    background-color: {{ block.settings.error_background_color }};
+    color: {{ block.settings.error_text_color }};
+  }
+
+  .ai-membership-signup__benefits-{{ ai_gen_id }} {
+    margin-top: {{ block.settings.spacing_between_elements }}px;
+    text-align: left;
+  }
+
+  .ai-membership-signup__benefits-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 16px 0;
+  }
+
+  .ai-membership-signup__benefits-list-{{ ai_gen_id }} {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-membership-signup__benefit-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: {{ block.settings.label_size }}px;
+    color: {{ block.settings.description_color }};
+  }
+
+  .ai-membership-signup__benefit-icon-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    color: {{ block.settings.button_background_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-membership-signup-{{ ai_gen_id }} {
+      width: 100%;
+      padding: {{ block.settings.section_padding | times: 0.6 }}px;
+    }
+
+    .ai-membership-signup__heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.8 }}px;
+    }
+
+    .ai-membership-signup__description-{{ ai_gen_id }} {
+      font-size: {{ block.settings.description_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<membership-signup-{{ ai_gen_id }}
+  class="ai-membership-signup-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+  data-omnisend-brand-id="{{ block.settings.omnisend_brand_id }}"
+  data-omnisend-list-id="{{ block.settings.omnisend_list_id }}"
+>
+  <div class="ai-membership-signup__container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-membership-signup__heading-{{ ai_gen_id }}">
+        {{ block.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if block.settings.description != blank %}
+      <div class="ai-membership-signup__description-{{ ai_gen_id }}">
+        {{ block.settings.description }}
+      </div>
+    {% endif %}
+
+    <form class="ai-membership-signup__form-{{ ai_gen_id }}" data-signup-form>
+      {% if block.settings.show_first_name %}
+        <div class="ai-membership-signup__field-group-{{ ai_gen_id }}">
+          <label class="ai-membership-signup__label-{{ ai_gen_id }}" for="first-name-{{ ai_gen_id }}">
+            First Name{% if block.settings.require_first_name %} *{% endif %}
+          </label>
+          <input
+            type="text"
+            id="first-name-{{ ai_gen_id }}"
+            name="firstName"
+            class="ai-membership-signup__input-{{ ai_gen_id }}"
+            {% if block.settings.require_first_name %}required{% endif %}
+            autocomplete="given-name"
+          >
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_last_name %}
+        <div class="ai-membership-signup__field-group-{{ ai_gen_id }}">
+          <label class="ai-membership-signup__label-{{ ai_gen_id }}" for="last-name-{{ ai_gen_id }}">
+            Last Name{% if block.settings.require_last_name %} *{% endif %}
+          </label>
+          <input
+            type="text"
+            id="last-name-{{ ai_gen_id }}"
+            name="lastName"
+            class="ai-membership-signup__input-{{ ai_gen_id }}"
+            {% if block.settings.require_last_name %}required{% endif %}
+            autocomplete="family-name"
+          >
+        </div>
+      {% endif %}
+
+      <div class="ai-membership-signup__field-group-{{ ai_gen_id }}">
+        <label class="ai-membership-signup__label-{{ ai_gen_id }}" for="email-{{ ai_gen_id }}">
+          Email Address *
+        </label>
+        <input
+          type="email"
+          id="email-{{ ai_gen_id }}"
+          name="email"
+          class="ai-membership-signup__input-{{ ai_gen_id }}"
+          required
+          autocomplete="email"
+          aria-describedby="message-{{ ai_gen_id }}"
+        >
+      </div>
+
+      {% if block.settings.show_phone %}
+        <div class="ai-membership-signup__field-group-{{ ai_gen_id }}">
+          <label class="ai-membership-signup__label-{{ ai_gen_id }}" for="phone-{{ ai_gen_id }}">
+            Phone Number{% if block.settings.require_phone %} *{% endif %}
+          </label>
+          <input
+            type="tel"
+            id="phone-{{ ai_gen_id }}"
+            name="phone"
+            class="ai-membership-signup__input-{{ ai_gen_id }}"
+            {% if block.settings.require_phone %}required{% endif %}
+            autocomplete="tel"
+          >
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_consent_checkbox %}
+        <div class="ai-membership-signup__checkbox-group-{{ ai_gen_id }}">
+          <input
+            type="checkbox"
+            id="consent-{{ ai_gen_id }}"
+            name="consent"
+            class="ai-membership-signup__checkbox-{{ ai_gen_id }}"
+            required
+          >
+          <label class="ai-membership-signup__checkbox-label-{{ ai_gen_id }}" for="consent-{{ ai_gen_id }}">
+            {{ block.settings.consent_text }}
+          </label>
+        </div>
+      {% endif %}
+
+      <button
+        type="submit"
+        class="ai-membership-signup__button-{{ ai_gen_id }}"
+        data-submit-button
+      >
+        {{ block.settings.button_text }}
+      </button>
+
+      <div
+        id="message-{{ ai_gen_id }}"
+        class="ai-membership-signup__message-{{ ai_gen_id }}"
+        data-message
+        role="alert"
+        aria-live="polite"
+      ></div>
+    </form>
+
+    {% if block.settings.show_benefits %}
+      <div class="ai-membership-signup__benefits-{{ ai_gen_id }}">
+        {% if block.settings.benefits_title != blank %}
+          <h3 class="ai-membership-signup__benefits-title-{{ ai_gen_id }}">
+            {{ block.settings.benefits_title }}
+          </h3>
+        {% endif %}
+        <ul class="ai-membership-signup__benefits-list-{{ ai_gen_id }}">
+          {% if block.settings.benefit_1 != blank %}
+            <li class="ai-membership-signup__benefit-item-{{ ai_gen_id }}">
+              <svg class="ai-membership-signup__benefit-icon-{{ ai_gen_id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>{{ block.settings.benefit_1 }}</span>
+            </li>
+          {% endif %}
+          {% if block.settings.benefit_2 != blank %}
+            <li class="ai-membership-signup__benefit-item-{{ ai_gen_id }}">
+              <svg class="ai-membership-signup__benefit-icon-{{ ai_gen_id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>{{ block.settings.benefit_2 }}</span>
+            </li>
+          {% endif %}
+          {% if block.settings.benefit_3 != blank %}
+            <li class="ai-membership-signup__benefit-item-{{ ai_gen_id }}">
+              <svg class="ai-membership-signup__benefit-icon-{{ ai_gen_id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>{{ block.settings.benefit_3 }}</span>
+            </li>
+          {% endif %}
+          {% if block.settings.benefit_4 != blank %}
+            <li class="ai-membership-signup__benefit-item-{{ ai_gen_id }}">
+              <svg class="ai-membership-signup__benefit-icon-{{ ai_gen_id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>{{ block.settings.benefit_4 }}</span>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</membership-signup-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class MembershipSignup{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.form = this.querySelector('[data-signup-form]');
+        this.submitButton = this.querySelector('[data-submit-button]');
+        this.message = this.querySelector('[data-message]');
+        this.omnisendBrandId = this.dataset.omnisendBrandId;
+        this.omnisendListId = this.dataset.omnisendListId;
+      }
+
+      connectedCallback() {
+        this.form.addEventListener('submit', this.handleSubmit.bind(this));
+      }
+
+      async handleSubmit(event) {
+        event.preventDefault();
+
+        if (!this.omnisendBrandId) {
+          this.showMessage('Please configure your Omnisend Brand ID in the block settings.', 'error');
+          return;
+        }
+
+        const formData = new FormData(this.form);
+        const data = {
+          email: formData.get('email'),
+          firstName: formData.get('firstName') || undefined,
+          lastName: formData.get('lastName') || undefined,
+          phone: formData.get('phone') || undefined,
+          tags: ['membership'],
+          status: 'subscribed'
+        };
+
+        if (this.omnisendListId) {
+          data.listID = this.omnisendListId;
+        }
+
+        this.submitButton.disabled = true;
+        this.submitButton.textContent = 'Submitting...';
+        this.message.className = 'ai-membership-signup__message-{{ ai_gen_id }}';
+        this.message.textContent = '';
+
+        try {
+          const response = await fetch(`https://api.omnisend.com/v3/contacts`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-API-KEY': this.omnisendBrandId
+            },
+            body: JSON.stringify(data)
+          });
+
+          if (response.ok || response.status === 409) {
+            this.showMessage('Thank you for joining! Check your email for confirmation.', 'success');
+            this.form.reset();
+          } else {
+            const errorData = await response.json();
+            this.showMessage(errorData.message || 'Something went wrong. Please try again.', 'error');
+          }
+        } catch (error) {
+          this.showMessage('Unable to connect. Please check your internet connection and try again.', 'error');
+        } finally {
+          this.submitButton.disabled = false;
+          this.submitButton.textContent = '{{ block.settings.button_text }}';
+        }
+      }
+
+      showMessage(text, type) {
+        this.message.textContent = text;
+        this.message.className = `ai-membership-signup__message-{{ ai_gen_id }} ${type}`;
+      }
+    }
+
+    customElements.define('membership-signup-{{ ai_gen_id }}', MembershipSignup{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Membership signup",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Omnisend integration"
+    },
+    {
+      "type": "paragraph",
+      "content": "Get your API key from Omnisend: Account Settings > API Keys. Get your List ID from Audience > Lists."
+    },
+    {
+      "type": "text",
+      "id": "omnisend_brand_id",
+      "label": "Omnisend API key"
+    },
+    {
+      "type": "text",
+      "id": "omnisend_list_id",
+      "label": "Omnisend list ID"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Become a Member"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Join our exclusive community and unlock special benefits, early access to new products, and member-only discounts.</p>"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Join Now"
+    },
+    {
+      "type": "header",
+      "content": "Form fields"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_first_name",
+      "label": "Show first name field",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "require_first_name",
+      "label": "Require first name",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_last_name",
+      "label": "Show last name field",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "require_last_name",
+      "label": "Require last name",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Show phone field",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "require_phone",
+      "label": "Require phone",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_consent_checkbox",
+      "label": "Show consent checkbox",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "consent_text",
+      "label": "Consent text",
+      "default": "I agree to receive marketing emails and accept the privacy policy."
+    },
+    {
+      "type": "header",
+      "content": "Membership benefits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_benefits",
+      "label": "Show benefits section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "benefits_title",
+      "label": "Benefits title",
+      "default": "Member Benefits"
+    },
+    {
+      "type": "text",
+      "id": "benefit_1",
+      "label": "Benefit 1",
+      "default": "Exclusive early access to new products"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2",
+      "label": "Benefit 2",
+      "default": "Member-only discounts and promotions"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3",
+      "label": "Benefit 3",
+      "default": "Free shipping on all orders"
+    },
+    {
+      "type": "text",
+      "id": "benefit_4",
+      "label": "Benefit 4",
+      "default": "Birthday surprises and special gifts"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 400,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "spacing_between_elements",
+      "label": "Spacing between elements",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "form_field_spacing",
+      "label": "Form field spacing",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#0B0B0D"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#EDE7DA"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description",
+      "default": "#8A8FA0"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label",
+      "default": "#EDE7DA"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link",
+      "default": "#EDE7DA"
+    },
+    {
+      "type": "header",
+      "content": "Input fields"
+    },
+    {
+      "type": "color",
+      "id": "input_background_color",
+      "label": "Background",
+      "default": "#23252B"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Text",
+      "default": "#EDE7DA"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Border",
+      "default": "#23252B"
+    },
+    {
+      "type": "color",
+      "id": "input_focus_border_color",
+      "label": "Focus border",
+      "default": "#EDE7DA"
+    },
+    {
+      "type": "range",
+      "id": "input_padding",
+      "label": "Padding",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "input_border_width",
+      "label": "Border width",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Background",
+      "default": "#EDE7DA"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background_color",
+      "label": "Hover background",
+      "default": "#D4CFC2"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text",
+      "default": "#0B0B0D"
+    },
+    {
+      "type": "range",
+      "id": "button_padding",
+      "label": "Padding",
+      "min": 10,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Messages"
+    },
+    {
+      "type": "color",
+      "id": "success_background_color",
+      "label": "Success background",
+      "default": "#1E4D2B"
+    },
+    {
+      "type": "color",
+      "id": "success_text_color",
+      "label": "Success text",
+      "default": "#A7F3D0"
+    },
+    {
+      "type": "color",
+      "id": "error_background_color",
+      "label": "Error background",
+      "default": "#7F1D1D"
+    },
+    {
+      "type": "color",
+      "id": "error_text_color",
+      "label": "Error text",
+      "default": "#FCA5A5"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "archivo_n8"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "Label size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "input_text_size",
+      "label": "Input text size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "label": "Button text size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Membership signup"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,20 @@
+<div class="oh-section">
+  <div class="oh-coll-head"><h1>COLLECTIONS</h1></div>
+  <div class="oh-grid">
+    {% for collection in collections %}
+      <a class="oh-card" href="{{ collection.url }}">
+        <div class="oh-card-media">
+          {% if collection.featured_image %}{{ collection.featured_image | image_url: width: 800 | image_tag: alt: collection.title, loading: 'lazy' }}{% endif %}
+        </div>
+        <div class="oh-card-meta">
+          <span>{{ collection.title | upcase }}</span>
+          <span class="oh-price">{{ collection.products_count }}</span>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Collections list", "settings": [] }
+{% endschema %}

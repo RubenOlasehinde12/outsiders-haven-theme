@@ -1,0 +1,30 @@
+<div class="oh-section">
+  <div class="oh-coll-head"><h1>{{ blog.title | upcase }}</h1></div>
+  {% paginate blog.articles by 12 %}
+    <div class="oh-grid">
+      {% for article in blog.articles %}
+        <a class="oh-card" href="{{ article.url }}">
+          <div class="oh-card-media">
+            {% if article.image %}{{ article.image | image_url: width: 800 | image_tag: alt: article.title, loading: 'lazy' }}{% endif %}
+          </div>
+          <div class="oh-card-meta">
+            <span>{{ article.title | upcase }}</span>
+            <span class="oh-price">{{ article.published_at | date: '%d %b' }}</span>
+          </div>
+        </a>
+      {% else %}
+        <p class="oh-note">NO POSTS YET</p>
+      {% endfor %}
+    </div>
+    {% if paginate.pages > 1 %}
+      <nav class="oh-pager">
+        {% if paginate.previous %}<a href="{{ paginate.previous.url }}">← PREV</a>{% endif %}
+        {% if paginate.next %}<a href="{{ paginate.next.url }}">NEXT →</a>{% endif %}
+      </nav>
+    {% endif %}
+  {% endpaginate %}
+</div>
+
+{% schema %}
+{ "name": "Blog", "settings": [] }
+{% endschema %}

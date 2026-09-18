@@ -1,0 +1,44 @@
+<div class="oh-cart">
+  <h1>CART ({{ cart.item_count }})</h1>
+
+  {% if cart.item_count == 0 %}
+    <p class="oh-note oh-empty">YOUR CART IS EMPTY</p>
+    <div class="oh-center"><a class="oh-btn" href="{{ routes.all_products_collection_url }}">SHOP ALL</a></div>
+  {% else %}
+    <form action="{{ routes.cart_url }}" method="post" novalidate>
+      {% for item in cart.items %}
+        <div class="oh-line">
+          {% if item.image %}{{ item.image | image_url: width: 200 | image_tag: alt: item.title }}{% endif %}
+          <div style="flex:1">
+            <a class="oh-line-name" href="{{ item.url }}">{{ item.product.title | upcase }}</a>
+            <div class="oh-line-var">{{ item.variant.title | upcase }}</div>
+            <div style="margin-top:8px">
+              <div class="oh-stepper">
+                <button type="button" data-qty="{{ forloop.index }}" data-to="{{ item.quantity | minus: 1 }}" aria-label="Decrease">&minus;</button>
+                <span>{{ item.quantity }}</span>
+                <button type="button" data-qty="{{ forloop.index }}" data-to="{{ item.quantity | plus: 1 }}" aria-label="Increase">+</button>
+              </div>
+            </div>
+            <button class="oh-remove" type="button" data-qty="{{ forloop.index }}" data-to="0">REMOVE</button>
+          </div>
+          <div class="oh-line-name">{{ item.final_line_price | money }}</div>
+        </div>
+      {% endfor %}
+
+      <div class="oh-cart-foot">
+        <span>SUBTOTAL</span>
+        <span data-cart-total>{{ cart.total_price | money }}</span>
+      </div>
+      <p style="font-size:10px;color:#888;margin-top:8px">Shipping and taxes calculated at checkout.</p>
+
+      <div style="display:flex;gap:12px;margin-top:22px;flex-wrap:wrap">
+        <button class="oh-btn" type="submit" name="checkout">CHECKOUT</button>
+        <a class="oh-btn oh-btn-ghost" href="{{ routes.all_products_collection_url }}">CONTINUE SHOPPING</a>
+      </div>
+    </form>
+  {% endif %}
+</div>
+
+{% schema %}
+{ "name": "Cart", "settings": [] }
+{% endschema %}

@@ -1,0 +1,10 @@
+<div class="oh-form">
+  <h1>LOG IN</h1>
+  {% form 'customer_login' %}
+    {{ form.errors | default_errors }}
+    <div class="oh-field"><label for="ce">EMAIL</label><input class="oh-input" id="ce" type="email" name="customer[email]" required></div>
+    <div class="oh-field"><label for="cp">PASSWORD</label><input class="oh-input" id="cp" type="password" name="customer[password]"></div>
+    <button class="oh-btn oh-btn-block" type="submit">LOG IN</button>
+  {% endform %}
+  <p class="oh-note" style="margin-top:20px">New here? <a href="{{ routes.account_register_url }}" style="text-decoration:underline">Create an account</a></p>
+</div>

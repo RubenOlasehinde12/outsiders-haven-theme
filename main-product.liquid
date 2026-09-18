@@ -1,0 +1,163 @@
+<div class="oh-product" data-product data-layout="{{ section.settings.layout | default: 'centered' }}"
+  style="--oh-gallery-max:{{ section.settings.gallery_width | default: 100 }}%;--oh-gallery-maxpx:{{ section.settings.gallery_maxpx | default: 900 }}px;--oh-gallery-ratio:{{ section.settings.gallery_ratio | default: '3/4' }};--oh-gallery-fit:{{ section.settings.gallery_fit | default: 'cover' }};--oh-gallery-align:{{ section.settings.gallery_align | default: 'center' }};">
+  <div class="oh-gallery" data-gallery>
+    {% if product.images.size > 0 %}
+      <div class="oh-gallery-viewport" data-gallery-viewport>
+        <div class="oh-gallery-track" data-gallery-track>
+          {% for image in product.images limit: 8 %}
+            <div class="oh-gallery-slide">
+              {{ image | image_url: width: 1600 | image_tag: alt: product.title, loading: forloop.first | default: 'lazy' }}
+            </div>
+          {% endfor %}
+        </div>
+        {% if product.images.size > 1 %}
+          <button class="oh-gallery-arrow oh-gallery-prev" type="button" data-gallery-prev aria-label="Previous image">&#8249;</button>
+          <button class="oh-gallery-arrow oh-gallery-next" type="button" data-gallery-next aria-label="Next image">&#8250;</button>
+          <div class="oh-gallery-dots" data-gallery-dots>
+            {% for image in product.images limit: 8 %}
+              <button class="oh-gallery-dot{% if forloop.first %} is-active{% endif %}" type="button" data-gallery-dot="{{ forloop.index0 }}" aria-label="Go to image {{ forloop.index }}"></button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="oh-gallery-viewport"><div style="width:100%;height:100%;background:#15161a"></div></div>
+    {% endif %}
+  </div>
+
+  <div>
+    <h1 class="oh-p-title">{{ product.title | upcase }}</h1>
+    <div class="oh-p-price" data-price>{{ product.price | money }}</div>
+    {% if section.settings.price_note != blank %}<div class="oh-p-pricenote">{{ section.settings.price_note }}</div>{% endif %}
+
+    <input type="hidden" data-variant-id value="{% if product.selected_or_first_available_variant %}{{ product.selected_or_first_available_variant.id }}{% endif %}">
+
+    {% if product.variants.size > 1 %}
+      <div style="margin-top:30px">
+        <span class="oh-label">{{ product.options.first | upcase }}</span>
+        <div class="oh-sizes">
+          {% for variant in product.variants %}
+            <button class="oh-size{% if variant.id == product.selected_or_first_available_variant.id %} is-active{% endif %}{% unless variant.available %} is-soldout{% endunless %}"
+                    type="button"
+                    data-variant="{{ variant.id }}"
+                    data-price="{{ variant.price | money }}"
+                    {% unless variant.available %}aria-disabled="true"{% endunless %}>
+              {{ variant.title | upcase }}
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div style="margin-top:30px">
+      <button class="oh-btn oh-btn-block" type="button" data-add {% unless product.available %}disabled{% endunless %}>
+        {% if product.available %}ADD TO CART{% else %}SOLD OUT{% endif %}
+      </button>
+      <p class="oh-err" data-err hidden>SELECT A SIZE FIRST</p>
+    </div>
+
+    {% if product.description != blank %}
+      <div class="oh-p-info">
+        {% if section.settings.info_heading != blank %}<h2 class="oh-p-info-head">{{ section.settings.info_heading }}</h2>{% endif %}
+        <div class="oh-p-desc oh-rte">{{ product.description }}</div>
+      </div>
+    {% endif %}
+
+    <dl class="oh-specs">
+      {% if product.metafields.custom.fabric != blank %}<dt>FABRIC</dt><dd>{{ product.metafields.custom.fabric }}</dd>{% endif %}
+      {% if product.metafields.custom.fit != blank %}<dt>FIT</dt><dd>{{ product.metafields.custom.fit }}</dd>{% endif %}
+      {% if section.settings.care != blank %}<dt>CARE</dt><dd>{{ section.settings.care }}</dd>{% endif %}
+      {% if section.settings.shipping != blank %}<dt>SHIPPING</dt><dd>{{ section.settings.shipping }}</dd>{% endif %}
+    </dl>
+
+    <div class="oh-accordions">
+      {% if section.settings.sizing_help != blank %}
+        <details class="oh-acc">
+          <summary class="oh-acc-head">SIZING HELP<span class="oh-acc-icon" aria-hidden="true"></span></summary>
+          <div class="oh-acc-body oh-rte">{{ section.settings.sizing_help }}</div>
+        </details>
+      {% endif %}
+      {% if section.settings.shipping_returns != blank %}
+        <details class="oh-acc">
+          <summary class="oh-acc-head">SHIPPING &amp; RETURNS<span class="oh-acc-icon" aria-hidden="true"></span></summary>
+          <div class="oh-acc-body oh-rte">{{ section.settings.shipping_returns }}</div>
+        </details>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% if product.available %}
+  <div class="oh-sticky-atc" data-sticky-atc>
+    <div class="oh-sticky-info">
+      <div class="oh-sticky-name">{{ product.title | upcase }}</div>
+      <div class="oh-sticky-price">{{ product.price | money }}</div>
+    </div>
+    <button class="oh-btn" type="button" data-sticky-add>ADD TO CART</button>
+  </div>
+{% endif %}
+
+{% if section.settings.related %}
+  <div class="oh-section">
+    <h2 class="oh-sec-title">YOU MAY ALSO LIKE</h2>
+    <div class="oh-grid">
+      {% for card_product in collections.all.products limit: 4 %}
+        {% unless card_product.id == product.id %}
+          {% render 'product-card', card_product: card_product %}
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    { "type": "header", "content": "Gallery" },
+    {
+      "type": "select", "id": "layout", "label": "Layout", "default": "centered",
+      "info": "Split = image left, details right. Centered = image and details stacked and centered.",
+      "options": [
+        { "value": "split", "label": "Split (two columns)" },
+        { "value": "centered", "label": "Centered (single column)" }
+      ]
+    },
+    { "type": "range", "id": "gallery_width", "label": "Image size (% of column width)", "min": 40, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "gallery_maxpx", "label": "Max image width", "min": 280, "max": 1200, "step": 20, "unit": "px", "default": 900, "info": "Hard cap so the image never gets too large on wide screens. Lower = smaller." },
+    {
+      "type": "select", "id": "gallery_ratio", "label": "Image shape", "default": "3/4",
+      "options": [
+        { "value": "3/4", "label": "Tall (3:4)" },
+        { "value": "4/5", "label": "Portrait (4:5)" },
+        { "value": "1/1", "label": "Square (1:1)" },
+        { "value": "4/3", "label": "Landscape (4:3)" }
+      ]
+    },
+    {
+      "type": "select", "id": "gallery_fit", "label": "Image fit", "default": "cover",
+      "info": "Crop fills the frame. Contain shows the whole image with space around it.",
+      "options": [
+        { "value": "cover", "label": "Crop to fill" },
+        { "value": "contain", "label": "Show whole image" }
+      ]
+    },
+    {
+      "type": "select", "id": "gallery_align", "label": "Image alignment", "default": "center",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ]
+    },
+    { "type": "header", "content": "Product details" },
+    { "type": "text", "id": "price_note", "label": "Price note", "default": "TAX & SHIPPING CALCULATED AT CHECKOUT" },
+    { "type": "text", "id": "info_heading", "label": "Description heading", "default": "PRODUCT INFORMATION", "info": "Shows above the product's Description. The description text itself is edited on each product in Products → (product) → Description." },
+    { "type": "text", "id": "care", "label": "Care text", "default": "COLD WASH — HANG DRY" },
+    { "type": "text", "id": "shipping", "label": "Shipping text", "default": "SHIPS IN 3–5 BUSINESS DAYS" },
+    { "type": "checkbox", "id": "related", "label": "Show related products", "default": true },
+    { "type": "header", "content": "Expandable sections" },
+    { "type": "richtext", "id": "sizing_help", "label": "Sizing help", "default": "<p>Model is 186cm / 6'0\", wears size Medium. Due to the production process, measurements can slightly vary.</p>" },
+    { "type": "richtext", "id": "shipping_returns", "label": "Shipping & returns", "default": "<p>Ships in 3–5 business days. Free worldwide shipping on orders over 150€. Returns accepted within 14 days.</p>" }
+  ]
+}
+{% endschema %}

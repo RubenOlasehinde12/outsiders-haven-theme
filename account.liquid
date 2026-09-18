@@ -1,0 +1,22 @@
+<div class="oh-page">
+  <h1>ACCOUNT</h1>
+  <p class="oh-note">{{ customer.email }} — <a href="{{ routes.account_logout_url }}" style="text-decoration:underline">LOG OUT</a></p>
+
+  <h2 style="font-size:11px;font-weight:600;letter-spacing:.12em;margin:36px 0 14px">ORDERS</h2>
+  {% if customer.orders.size > 0 %}
+    {% for order in customer.orders %}
+      <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.08);font-size:11px">
+        <a href="{{ order.customer_url }}" style="font-weight:600">{{ order.name }}</a>
+        <span style="color:#888">{{ order.created_at | date: '%d %b %Y' }}</span>
+        <span>{{ order.financial_status | upcase }}</span>
+        <span>{{ order.total_price | money }}</span>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="oh-note">NO ORDERS YET</p>
+  {% endif %}
+
+  <h2 style="font-size:11px;font-weight:600;letter-spacing:.12em;margin:36px 0 14px">ADDRESS</h2>
+  <div class="oh-rte">{{ customer.default_address | format_address }}</div>
+  <p style="margin-top:12px"><a href="{{ routes.account_addresses_url }}" class="oh-note" style="text-decoration:underline">MANAGE ADDRESSES</a></p>
+</div>

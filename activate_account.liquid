@@ -1,0 +1,10 @@
+<div class="oh-form">
+  <h1>ACTIVATE ACCOUNT</h1>
+  {% form 'activate_customer_password' %}
+    {{ form.errors | default_errors }}
+    <div class="oh-field"><label for="ap">PASSWORD</label><input class="oh-input" id="ap" type="password" name="customer[password]"></div>
+    <div class="oh-field"><label for="ac">CONFIRM</label><input class="oh-input" id="ac" type="password" name="customer[password_confirmation]"></div>
+    <button class="oh-btn oh-btn-block" type="submit">ACTIVATE</button>
+    <button class="oh-btn oh-btn-ghost oh-btn-block" type="submit" name="decline" style="margin-top:10px">DECLINE</button>
+  {% endform %}
+</div>

@@ -1,0 +1,50 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<div class="oh-richtext" style="background:{{ s.bg | default: 'transparent' }};color:{{ s.text_color | default: 'inherit' }};padding:{{ s.pad_top }}px var(--oh-pad) {{ s.pad_bottom }}px;text-align:{{ s.align }}">
+  <div class="oh-richtext-inner" style="max-width:{{ s.width }}px;margin:0 auto">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'eyebrow' %}
+          <p class="oh-rt-eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+        {% when 'heading' %}
+          <h2 class="oh-rt-heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+        {% when 'text' %}
+          <div class="oh-rte oh-rt-body" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {% when 'button' %}
+          <div class="oh-rt-btnwrap" {{ block.shopify_attributes }}>
+            <a class="oh-btn{% if block.settings.style == 'ghost' %} oh-btn-ghost{% endif %}" href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.label }}</a>
+          </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "tag": "section",
+  "settings": [
+    { "type": "select", "id": "align", "label": "Alignment", "default": "center",
+      "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }] },
+    { "type": "range", "id": "width", "label": "Content width", "min": 400, "max": 1000, "step": 20, "unit": "px", "default": 620 },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text colour" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pad_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "pad_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    { "type": "eyebrow", "name": "Eyebrow", "limit": 1, "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "OUTSIDERS HAVEN" } ] },
+    { "type": "heading", "name": "Heading", "limit": 1, "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "JUST BE" } ] },
+    { "type": "text", "name": "Text", "settings": [ { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Independent streetwear. Small runs, heavy fabrics, no restocks.</p>" } ] },
+    { "type": "button", "name": "Button", "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "SHOP THE DROP" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "select", "id": "style", "label": "Style", "default": "solid", "options": [{ "value": "solid", "label": "Solid" }, { "value": "ghost", "label": "Outline" }] }
+      ] }
+  ],
+  "presets": [{ "name": "Rich text", "blocks": [{ "type": "eyebrow" }, { "type": "heading" }, { "type": "text" }] }]
+}
+{% endschema %}

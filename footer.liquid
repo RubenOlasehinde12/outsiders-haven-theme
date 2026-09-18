@@ -1,0 +1,49 @@
+<footer class="oh-footer">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'menu' %}
+        <div class="oh-fcol" {{ block.shopify_attributes }}>
+          <h3>{{ block.settings.heading | upcase }}</h3>
+          <ul>
+            {% for link in block.settings.menu.links %}
+              <li><a href="{{ link.url }}">{{ link.title | upcase }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% when 'newsletter' %}
+        <div class="oh-fcol" {{ block.shopify_attributes }}>
+          <h3>{{ block.settings.heading | upcase }}</h3>
+          {% form 'customer' %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input class="oh-input" type="email" name="contact[email]" placeholder="EMAIL" required style="font-size:11px;padding:12px">
+            <button class="oh-btn oh-btn-block" type="submit" style="margin-top:8px;padding:12px 0">SIGN UP</button>
+            {% if form.posted_successfully? %}<p class="oh-note" style="margin-top:10px">THANKS — YOU'RE ON THE LIST</p>{% endif %}
+          {% endform %}
+        </div>
+    {% endcase %}
+  {% endfor %}
+</footer>
+<div class="oh-copy">{{ 'now' | date: '%Y' }} © {{ shop.name | upcase }}</div>
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "BRAND" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": [{ "type": "text", "id": "heading", "label": "Heading", "default": "JOIN THE HAVEN" }]
+    }
+  ],
+  "presets": [{ "name": "Footer", "blocks": [{ "type": "menu" }, { "type": "menu" }, { "type": "newsletter" }] }]
+}
+{% endschema %}

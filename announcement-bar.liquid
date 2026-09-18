@@ -1,0 +1,23 @@
+{%- liquid
+  assign s = section.settings
+  assign bg = s.bg
+  assign fg = s.text_color
+-%}
+<div class="oh-announce"
+     style="padding-top:{{ s.pad_y | default: 9 }}px;padding-bottom:{{ s.pad_y | default: 9 }}px;{% if bg != blank %}background:{{ bg }};{% endif %}{% if fg != blank %}color:{{ fg }};{% endif %}">
+  {% if s.link != blank %}<a href="{{ s.link }}" style="color:inherit">{{ s.text }}</a>{% else %}{{ s.text }}{% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    { "type": "text", "id": "text", "label": "Text", "default": "FREE WORLDWIDE SHIPPING ON ORDERS OVER $150" },
+    { "type": "url", "id": "link", "label": "Link (optional)" },
+    { "type": "color", "id": "bg", "label": "Background (optional, overrides theme colour)" },
+    { "type": "color", "id": "text_color", "label": "Text colour (optional, overrides theme colour)" },
+    { "type": "range", "id": "pad_y", "label": "Vertical padding", "min": 4, "max": 30, "step": 1, "unit": "px", "default": 9 }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

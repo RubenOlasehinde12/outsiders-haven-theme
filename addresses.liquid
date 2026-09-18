@@ -1,0 +1,17 @@
+<div class="oh-page">
+  <h1>ADDRESSES</h1>
+  {% for address in customer.addresses %}
+    <div style="padding:18px 0;border-bottom:1px solid rgba(0,0,0,.08)" class="oh-rte">{{ address | format_address }}</div>
+  {% else %}
+    <p class="oh-note">NO SAVED ADDRESSES</p>
+  {% endfor %}
+
+  <h2 style="font-size:11px;font-weight:600;letter-spacing:.12em;margin:36px 0 14px">ADD NEW</h2>
+  {% form 'customer_address', customer.new_address %}
+    <div class="oh-field"><label for="a1">ADDRESS</label><input class="oh-input" id="a1" type="text" name="address[address1]"></div>
+    <div class="oh-field"><label for="a2">CITY</label><input class="oh-input" id="a2" type="text" name="address[city]"></div>
+    <div class="oh-field"><label for="a3">ZIP</label><input class="oh-input" id="a3" type="text" name="address[zip]"></div>
+    <div class="oh-field"><label for="a4">COUNTRY</label><input class="oh-input" id="a4" type="text" name="address[country]"></div>
+    <button class="oh-btn oh-btn-block" type="submit">SAVE ADDRESS</button>
+  {% endform %}
+</div>

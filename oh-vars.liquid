@@ -1,0 +1,48 @@
+{%- comment -%}
+  Outputs theme-setting-driven CSS variables and loads the chosen fonts.
+  Included in theme.liquid, password.liquid and gift_card.liquid so every
+  surface shares one source of truth. Every value falls back to the original
+  hardcoded design token, so an unset setting never breaks the look.
+  NOTE: the `font_face` filter returns a bare @font-face rule, so it MUST be
+  emitted inside this <style> block — never in raw page markup.
+{%- endcomment -%}
+{%- assign heading_font = settings.font_heading -%}
+{%- assign body_font = settings.font_body -%}
+{%- comment -%}
+  The Shopify font pickers (Theme settings → Typography) fully control the fonts.
+  Whatever the merchant selects is loaded via font_face and used as the primary
+  family. Cormorant Garamond + DM Mono load from Google Fonts only as fallbacks,
+  so the brand look holds until a font is picked, then the pick takes over.
+{%- endcomment -%}
+{%- if body_font.family -%}
+  {%- assign body_stack = "'" | append: body_font.family | append: "', 'DM Mono', " | append: body_font.fallback_families -%}
+{%- else -%}
+  {%- assign body_stack = "'DM Mono', monospace" -%}
+{%- endif -%}
+{%- if heading_font.family -%}
+  {%- assign heading_stack = "'" | append: heading_font.family | append: "', 'Cormorant Garamond', " | append: heading_font.fallback_families -%}
+{%- else -%}
+  {%- assign heading_stack = "'Cormorant Garamond', serif" -%}
+{%- endif -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  {{ heading_font | font_face: font_display: 'swap' }}
+  {{ body_font | font_face: font_display: 'swap' }}
+  :root{
+    --oh-ink: {{ settings.color_text | default: '#111111' }};
+    --oh-bg: {{ settings.color_bg | default: '#ffffff' }};
+    --oh-muted: {{ settings.color_muted | default: '#777777' }};
+    --oh-line: {{ settings.color_line | default: '#e6e6e6' }};
+    --oh-btn: {{ settings.color_button | default: '#111111' }};
+    --oh-btn-text: {{ settings.color_button_text | default: '#ffffff' }};
+    --oh-announce-bg: {{ settings.color_announce_bg | default: '#000000' }};
+    --oh-announce-text: {{ settings.color_announce_text | default: '#ffffff' }};
+    --oh-font-body: {{ body_stack }};
+    --oh-font-heading: {{ heading_stack }};
+    --oh-page-width: {{ settings.page_width | default: 1600 }}px;
+    --oh-pad: {{ settings.section_pad | default: 40 }}px;
+  }
+  html{ font-size: {{ settings.font_body_scale | default: 100 }}%; }
+</style>

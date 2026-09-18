@@ -1,0 +1,35 @@
+<div class="oh-section">
+  <div class="oh-coll-head">
+    <h1>{% if search.performed %}SEARCH — "{{ search.terms | escape }}"{% else %}SEARCH{% endif %}</h1>
+    {% if search.performed %}<span class="oh-count">{{ search.results_count }} RESULTS</span>{% endif %}
+  </div>
+
+  <form action="{{ routes.search_url }}" method="get" role="search" style="max-width:460px;margin-bottom:32px">
+    <input class="oh-input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="SEARCH PRODUCTS…">
+  </form>
+
+  {% paginate search.results by 24 %}
+    <div class="oh-grid">
+      {% for item in search.results %}
+        {% if item.object_type == 'product' %}
+          {% render 'product-card', card_product: item %}
+        {% else %}
+          <a class="oh-card" href="{{ item.url }}"><div class="oh-card-meta"><span>{{ item.title | upcase }}</span></div></a>
+        {% endif %}
+      {% else %}
+        {% if search.performed %}<p class="oh-note">NO RESULTS</p>{% endif %}
+      {% endfor %}
+    </div>
+
+    {% if paginate.pages > 1 %}
+      <nav class="oh-pager">
+        {% if paginate.previous %}<a href="{{ paginate.previous.url }}">← PREV</a>{% endif %}
+        {% if paginate.next %}<a href="{{ paginate.next.url }}">NEXT →</a>{% endif %}
+      </nav>
+    {% endif %}
+  {% endpaginate %}
+</div>
+
+{% schema %}
+{ "name": "Search", "settings": [] }
+{% endschema %}

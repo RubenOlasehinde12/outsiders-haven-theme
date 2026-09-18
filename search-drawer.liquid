@@ -1,0 +1,12 @@
+<aside class="oh-drawer oh-drawer--right" data-search-drawer aria-hidden="true" aria-label="Search">
+  <div class="oh-drawer-head">
+    <span class="oh-drawer-title">SEARCH</span>
+    <button class="oh-x" type="button" data-close aria-label="Close search">{% render 'icon-close' %}</button>
+  </div>
+  <div class="oh-drawer-body">
+    <form action="{{ routes.search_url }}" method="get" role="search">
+      <input class="oh-input" type="search" name="q" placeholder="SEARCH PRODUCTS…" data-search-input autocomplete="off">
+    </form>
+    <div class="oh-search-results" data-search-results></div>
+  </div>
+</aside>

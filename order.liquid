@@ -1,0 +1,16 @@
+<div class="oh-page">
+  <h1>ORDER {{ order.name }}</h1>
+  <p class="oh-note">{{ order.created_at | date: '%d %B %Y' }} — {{ order.financial_status | upcase }} / {{ order.fulfillment_status | upcase }}</p>
+  <div style="margin-top:28px">
+    {% for line_item in order.line_items %}
+      <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.08);font-size:11px">
+        <span>{{ line_item.title | upcase }} × {{ line_item.quantity }}</span>
+        <span>{{ line_item.final_line_price | money }}</span>
+      </div>
+    {% endfor %}
+    <div style="display:flex;justify-content:space-between;padding:18px 0;font-size:12px;font-weight:600;letter-spacing:.08em">
+      <span>TOTAL</span><span>{{ order.total_price | money }}</span>
+    </div>
+  </div>
+  <p style="margin-top:20px"><a href="{{ routes.account_url }}" class="oh-note" style="text-decoration:underline">← BACK TO ACCOUNT</a></p>
+</div>

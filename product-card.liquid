@@ -1,0 +1,12 @@
+<a class="oh-card" href="{{ card_product.url }}">
+  <div class="oh-card-media">
+    {% if card_product.featured_image %}
+      {{ card_product.featured_image | image_url: width: 800 | image_tag: alt: card_product.title, loading: 'lazy' }}
+    {% endif %}
+    {% unless card_product.available %}<span class="oh-sold">SOLD OUT</span>{% endunless %}
+  </div>
+  <div class="oh-card-meta">
+    <span>{{ card_product.title | upcase }}</span>
+    <span class="oh-price">{{ card_product.price | money }}</span>
+  </div>
+</a>

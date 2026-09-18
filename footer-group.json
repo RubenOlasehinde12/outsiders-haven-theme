@@ -1,0 +1,1 @@
+{"type":"footer","name":"Footer group","sections":{"footer":{"type":"footer","blocks":{"b1":{"type":"menu","settings":{"heading":"BRAND","menu":"footer"}},"b2":{"type":"menu","settings":{"heading":"CUSTOMER SERVICE","menu":"footer-1"}},"b3":{"type":"newsletter","settings":{"heading":"JOIN THE HAVEN"}}},"block_order":["b1","b2","b3"],"settings":{}}},"order":["footer"]}

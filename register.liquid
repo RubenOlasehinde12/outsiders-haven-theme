@@ -1,0 +1,11 @@
+<div class="oh-form">
+  <h1>CREATE ACCOUNT</h1>
+  {% form 'create_customer' %}
+    {{ form.errors | default_errors }}
+    <div class="oh-field"><label for="rf">FIRST NAME</label><input class="oh-input" id="rf" type="text" name="customer[first_name]"></div>
+    <div class="oh-field"><label for="rl">LAST NAME</label><input class="oh-input" id="rl" type="text" name="customer[last_name]"></div>
+    <div class="oh-field"><label for="re">EMAIL</label><input class="oh-input" id="re" type="email" name="customer[email]" required></div>
+    <div class="oh-field"><label for="rp">PASSWORD</label><input class="oh-input" id="rp" type="password" name="customer[password]" required></div>
+    <button class="oh-btn oh-btn-block" type="submit">CREATE</button>
+  {% endform %}
+</div>
