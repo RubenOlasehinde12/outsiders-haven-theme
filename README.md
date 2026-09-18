@@ -6,7 +6,7 @@ A custom Shopify theme I hand-coded in Liquid, HTML, CSS and JavaScript for my o
 
 ## About the project
 
-I run Outsiders Haven as part of a small team, and I own the technical build. This repo is the code behind the live storefront — the sections, templates, styling and JavaScript that make up the theme. Shopify handles the platform side (checkout, hosting, payments); everything in here is the front-end theme I wrote on top of it.
+I run Outsiders Haven as part of a small team, and I own the technical build. This repo is the code behind the live storefront — the sections, templates, styling and JavaScript that make up the theme. Shopify handles the hosted checkout and payments; I configured the checkout flow and payment setup for the store, and kept card data with Stripe/Shopify so it never touches my own code. Everything in this repo is the front-end theme I wrote on top of that.
 
 ## Tech
 
